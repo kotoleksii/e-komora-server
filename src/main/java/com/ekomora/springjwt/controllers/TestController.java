@@ -15,21 +15,27 @@ public class TestController {
         return "Public Content.";
     }
 
-    @GetMapping("/dashboard/user")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String userAccess() {
-        return "User Content.";
+    @GetMapping("/dashboard/employee")
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public String employeeAccess() {
+        return "Employee Content.";
     }
 
-    @GetMapping("/dashboard/mod")
-    @PreAuthorize("hasRole('MODERATOR')")
-    public String moderatorAccess() {
-        return "Moderator Board.";
+    @GetMapping("/dashboard/hr")
+    @PreAuthorize("hasRole('HR')")
+    public String hrAccess() {
+        return "HR Board.";
     }
 
-    @GetMapping("/dashboard/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminAccess() {
-        return "Admin Board.";
+    @GetMapping("/dashboard/accountant")
+    @PreAuthorize("hasRole('ACCOUNTANT')")
+    public String accountantAccess() {
+        return "Accountant Board.";
     }
+
+    //    @GetMapping("/dashboard/user")
+//    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+//    public String userAccess() {
+//        return "User Content.";
+//    }
 }
