@@ -2,6 +2,7 @@ package com.ekomora.springjwt.controllers;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -96,7 +97,9 @@ public class AuthController {
                 signUpRequest.getLastName(),
                 signUpRequest.getPost(),
                 signUpRequest.getAvatar(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword())
+        );
+
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
