@@ -1,6 +1,8 @@
 package com.ekomora.springjwt.controllers;
 
+import com.ekomora.springjwt.models.Profile;
 import com.ekomora.springjwt.models.User;
+import com.ekomora.springjwt.repository.ProfileRepository;
 import com.ekomora.springjwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class TestController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ProfileRepository profileRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -62,15 +67,21 @@ public class TestController {
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         Optional<User> userData = userRepository.findById(id);
+        Optional<Profile> profileData = profileRepository.findById(id);
 
         if (userData.isPresent()) {
             User _user = userData.get();
             _user.setEmail(user.getEmail());
             _user.setFirstName(user.getFirstName());
             _user.setLastName(user.getLastName());
-//            _user.setPost(user.getPost());
             _user.setAvatar(user.getAvatar());
             _user.setPassword(user.getPassword());
+
+            Profile _profile = profileData.get();
+            _profile.setPost(user.getProfile().getPost());
+
+            _user.setProfile(_profile);
+            _profile.setUser(_user);
 
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
         } else {
