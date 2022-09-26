@@ -49,7 +49,7 @@ public class TestController {
                     user.getEmail(),
                     user.getFirstName(),
                     user.getLastName(),
-                    user.getPost(),
+//                    user.getPost(),
                     user.getAvatar(),
                     encoder.encode(user.getPassword())
             );
@@ -68,7 +68,7 @@ public class TestController {
             _user.setEmail(user.getEmail());
             _user.setFirstName(user.getFirstName());
             _user.setLastName(user.getLastName());
-            _user.setPost(user.getPost());
+//            _user.setPost(user.getPost());
             _user.setAvatar(user.getAvatar());
             _user.setPassword(user.getPassword());
 

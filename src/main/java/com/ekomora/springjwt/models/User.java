@@ -1,6 +1,7 @@
 package com.ekomora.springjwt.models;
 
 import com.ekomora.springjwt.controllers.classes.DefaultPasswordGenerator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,9 +40,9 @@ public class User {
     @Size(max = 20)
     private String lastName;
 
-    @NotBlank
-    @Size(max = 120)
-    private String post;
+//    @NotBlank
+//    @Size(max = 120)
+//    private String post;
 
     @NotBlank
     @Size(max = 120)
@@ -58,12 +59,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @PrimaryKeyJoinColumn
+    private Profile profile;
+
+
     public User(String email, String firstName, String lastName,
-                String post, String avatar, String password) {
+                String avatar, String password) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.post = post;
         this.avatar = avatar;
         this.password = password;
     }

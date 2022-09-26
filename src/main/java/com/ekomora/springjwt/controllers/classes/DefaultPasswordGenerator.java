@@ -36,7 +36,7 @@ public class DefaultPasswordGenerator {
         return host;
     }
 
-    public static String sendTempPassword(String email, String firstName) {
+    public static String generateAndSendMail(String email, String firstName) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         SimpleMailMessage message = new SimpleMailMessage();
         Properties props = mailSender.getJavaMailProperties();

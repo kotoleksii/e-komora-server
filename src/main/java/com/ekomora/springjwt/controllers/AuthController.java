@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.ekomora.springjwt.models.ERole;
+import com.ekomora.springjwt.models.Profile;
 import com.ekomora.springjwt.models.Role;
 import com.ekomora.springjwt.models.User;
 import com.ekomora.springjwt.payload.request.LoginRequest;
@@ -78,12 +79,6 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-//		if (userRepository.existsByFirstName(signUpRequest.getFirstName())) {
-//			return ResponseEntity
-//					.badRequest()
-//					.body(new MessageResponse("Error: Username is already taken!"));
-//		}
-
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
@@ -95,10 +90,14 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 signUpRequest.getFirstName(),
                 signUpRequest.getLastName(),
-                signUpRequest.getPost(),
                 signUpRequest.getAvatar(),
                 encoder.encode(signUpRequest.getPassword())
         );
+
+        //Starting profile setting of the new User
+        Profile userProfile = new Profile(
+                null, null, null,
+                null, null, null);
 
 
         Set<String> strRoles = signUpRequest.getRole();
@@ -131,6 +130,8 @@ public class AuthController {
             });
         }
 
+        user.setProfile(userProfile);
+        userProfile.setUser(user);
         user.setRoles(roles);
         userRepository.save(user);
 
