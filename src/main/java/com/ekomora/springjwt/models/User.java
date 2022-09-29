@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,10 +43,6 @@ public class User {
     @Size(max = 20)
     private String lastName;
 
-//    @NotBlank
-//    @Size(max = 120)
-//    private String post;
-
     @NotBlank
     @Size(max = 120)
     private String avatar;
@@ -52,6 +51,11 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @CreationTimestamp
+    private LocalDateTime createDateTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateDateTime;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
