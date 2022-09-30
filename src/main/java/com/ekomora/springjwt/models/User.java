@@ -68,6 +68,9 @@ public class User {
     @PrimaryKeyJoinColumn
     private Profile profile;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Material> materials = new HashSet<>();
 
     public User(String email, String firstName, String lastName,
                 String avatar, String password) {

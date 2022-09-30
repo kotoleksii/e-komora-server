@@ -1,6 +1,7 @@
 package com.ekomora.springjwt.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Profile {
     @Column(name = "post")
     private String post;
 
+    @JsonFormat(pattern = "dd.MM.yyyy")
     @Temporal(TemporalType.DATE)
     @Column(name = "birthday")
     private Date birthday;
