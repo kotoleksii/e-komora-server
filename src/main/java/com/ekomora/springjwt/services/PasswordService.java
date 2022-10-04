@@ -1,4 +1,4 @@
-package com.ekomora.springjwt.controllers.classes;
+package com.ekomora.springjwt.services;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 import java.util.Random;
 
-public class DefaultPasswordGenerator {
+public class PasswordService {
     private static final String[] charCategories = new String[]{
             "abcdefghijklmnopqrstuvwxyz",
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -36,11 +36,8 @@ public class DefaultPasswordGenerator {
         return host;
     }
 
-    public static String generateAndSendMail(String email, String firstName) {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        SimpleMailMessage message = new SimpleMailMessage();
-        Properties props = mailSender.getJavaMailProperties();
-        String tempPassword = generate(10);
+    private static void mailSenderSettings(String email, JavaMailSenderImpl mailSender,
+                                           SimpleMailMessage message, Properties props) {
         mailSender.setHost("smtp." + getHostFromEmail(email));
         mailSender.setPort(25);
         mailSender.setUsername("vmminigames@gmail.com");
@@ -51,11 +48,29 @@ public class DefaultPasswordGenerator {
         props.put("mail.debug", "true");
         message.setTo(email);
         message.setSubject("E-Komora");
+    }
+
+    public static String generateAndSendToMail(String email, String firstName) {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        SimpleMailMessage message = new SimpleMailMessage();
+        Properties props = mailSender.getJavaMailProperties();
+        String tempPassword = generate(10);
+        mailSenderSettings(email, mailSender, message, props);
         message.setText("Вітаємо " + firstName +
-                ". Ваш тимчасовий пароль: " + tempPassword +
+                "! Ваш тимчасовий пароль: " + tempPassword +
                 ". Змініти його можна профілі.");
         mailSender.send(message);
         return tempPassword;
+    }
+
+    public static void sendToMail(String email, String password, String firstName) {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        SimpleMailMessage message = new SimpleMailMessage();
+        Properties props = mailSender.getJavaMailProperties();
+        mailSenderSettings(email, mailSender, message, props);
+        message.setText("Вітаємо " + firstName +
+                "! Ваш новий пароль: " + password + ".");
+        mailSender.send(message);
     }
 
 }

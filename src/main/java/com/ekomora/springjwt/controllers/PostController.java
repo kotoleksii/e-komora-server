@@ -1,5 +1,6 @@
 package com.ekomora.springjwt.controllers;
 
+import com.ekomora.springjwt.DTO.MaterialDto;
 import com.ekomora.springjwt.models.Post;
 import com.ekomora.springjwt.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ import java.util.Optional;
 public class PostController {
     @Autowired
     PostRepository postRepository;
+
+    @GetMapping("/posts/desc")
+    public List<Post> getAllPostsDesc() {
+        return postRepository.findAllByOrderByIdDesc();
+    }
 
     @GetMapping("/posts")
     public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) String title) {
@@ -89,6 +95,20 @@ public class PostController {
     public ResponseEntity<List<Post>> findByPublished() {
         try {
             List<Post> posts = postRepository.findByPublished(true);
+
+            if (posts.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(posts, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/posts/published/desc")
+    public ResponseEntity<List<Post>> findByPublishedDesc() {
+        try {
+            List<Post> posts = postRepository.findByPublishedOrderByIdDesc(true);
 
             if (posts.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

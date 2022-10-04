@@ -1,6 +1,6 @@
 package com.ekomora.springjwt.payload.request;
 
-import com.ekomora.springjwt.controllers.classes.DefaultPasswordGenerator;
+import com.ekomora.springjwt.services.PasswordService;
 
 import java.util.Set;
 
@@ -77,7 +77,7 @@ public class SignupRequest {
     public String getPassword() {
         return password != null
                 ? password
-                : DefaultPasswordGenerator.generateAndSendMail(email, firstName);
+                : PasswordService.generateAndSendToMail(email, firstName);
     }
 
     public void setPassword(String password) {

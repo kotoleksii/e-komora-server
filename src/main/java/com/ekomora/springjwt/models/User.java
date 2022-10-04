@@ -1,6 +1,5 @@
 package com.ekomora.springjwt.models;
 
-import com.ekomora.springjwt.controllers.classes.DefaultPasswordGenerator;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

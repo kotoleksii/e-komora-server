@@ -10,5 +10,9 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByPublished(boolean published);
 
+    List<Post> findByPublishedOrderByIdDesc(boolean published);
+
     List<Post> findByTitleContaining(String title);
+
+    List<Post> findAllByOrderByIdDesc();
 }
