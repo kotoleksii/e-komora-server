@@ -38,6 +38,16 @@ public class MaterialController {
         return new ResponseEntity<>(materials, HttpStatus.OK);
     }
 
+    @GetMapping("/users/materials/{userId}")
+    public ResponseEntity<List<MaterialDto>> getMaterialsByUserId(@PathVariable(value = "userId") Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Not found User with id = " + userId);
+        }
+
+        List<MaterialDto> materials = materialRepository.findAllProjectedByUserId(userId);
+        return new ResponseEntity<>(materials, HttpStatus.OK);
+    }
+
     @PostMapping("/users/{userId}/materials")
     public ResponseEntity<Material> createMaterial(@PathVariable(value = "userId") Long userId,
                                                    @RequestBody Material materialRequest) {
@@ -60,6 +70,11 @@ public class MaterialController {
         return materialRepository.findById(materialId).map(material -> {
             material.setTitle(materialRequest.getTitle());
             material.setInventoryNumber(materialRequest.getInventoryNumber());
+            material.setDateStart(materialRequest.getDateStart());
+            material.setType(materialRequest.getType());
+            material.setAmount(materialRequest.getAmount());
+            material.setPrice(materialRequest.getPrice());
+
             return materialRepository.save(material);
         }).orElseThrow(() -> new ResourceNotFoundException("MaterialId " + materialId + "not found"));
     }

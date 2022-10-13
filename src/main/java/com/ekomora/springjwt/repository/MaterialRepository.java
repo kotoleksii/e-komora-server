@@ -6,6 +6,7 @@ import com.ekomora.springjwt.models.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,9 +18,13 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     List<Material> findByUserId(Long userId);
 
+    //List<MaterialDto> findByUserId(Long userId);
+
     Optional<Material> findByIdAndUserId(Long id, Long userId);
 
     List<Material> findAllByUserId(Long userId);
+
+    List<MaterialDto> findAllProjectedByUserId(Long userId);
 
     //    @Query(value = "select new com.ekomora.springjwt.DTO.MaterialDto(m.id, m.title, m.inventoryNumber," +
 //            "m.dateStart, m.type, m.amount, m.price, m.user) from Material m")

@@ -27,7 +27,7 @@ public class Material {
     @Column(name = "inventory_number")
     private String inventoryNumber;
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
+//    @JsonFormat(pattern = "dd.MM.yyyy")
     @Temporal(TemporalType.DATE)
     @Column(name = "date_start")
     private Date dateStart;
@@ -42,7 +42,7 @@ public class Material {
     private int price;
 
     @JsonProperty
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonBackReference
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

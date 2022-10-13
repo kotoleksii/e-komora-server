@@ -2,6 +2,8 @@ package com.ekomora.springjwt.DTO;
 
 import com.ekomora.springjwt.models.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 

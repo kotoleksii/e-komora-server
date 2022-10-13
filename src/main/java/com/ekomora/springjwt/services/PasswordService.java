@@ -47,7 +47,7 @@ public class PasswordService {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         message.setTo(email);
-        message.setSubject("E-Komora");
+        message.setSubject("єРобота");
     }
 
     public static String generateAndSendToMail(String email, String firstName) {
