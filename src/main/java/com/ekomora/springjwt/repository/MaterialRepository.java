@@ -26,6 +26,8 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     List<MaterialDto> findAllProjectedByUserId(Long userId);
 
+    Optional<MaterialDto> findMaterialById(@Param("id") Long id);
+
     //    @Query(value = "select new com.ekomora.springjwt.DTO.MaterialDto(m.id, m.title, m.inventoryNumber," +
 //            "m.dateStart, m.type, m.amount, m.price, m.user) from Material m")
     List<MaterialDto> findAllProjectedBy();

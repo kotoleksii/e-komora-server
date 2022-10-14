@@ -2,6 +2,7 @@ package com.ekomora.springjwt.controllers;
 
 import com.ekomora.springjwt.DTO.MaterialDto;
 import com.ekomora.springjwt.models.Material;
+import com.ekomora.springjwt.models.Post;
 import com.ekomora.springjwt.repository.MaterialRepository;
 import com.ekomora.springjwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -48,6 +50,16 @@ public class MaterialController {
         return new ResponseEntity<>(materials, HttpStatus.OK);
     }
 
+    @GetMapping("/users/material/{materialId}")
+    public ResponseEntity<MaterialDto> getMaterialById(@PathVariable(value = "materialId") Long materialId) {
+        if (!materialRepository.existsById(materialId)) {
+            throw new ResourceNotFoundException("Not found Material with id = " + materialId);
+        }
+
+        Optional<MaterialDto> material = materialRepository.findMaterialById(materialId);
+        return new ResponseEntity<>(material.get(), HttpStatus.OK);
+    }
+
     @PostMapping("/users/{userId}/materials")
     public ResponseEntity<Material> createMaterial(@PathVariable(value = "userId") Long userId,
                                                    @RequestBody Material materialRequest) {
@@ -78,6 +90,8 @@ public class MaterialController {
             return materialRepository.save(material);
         }).orElseThrow(() -> new ResourceNotFoundException("MaterialId " + materialId + "not found"));
     }
+
+    //TODO: SendMaterial (change foreign key userId ?)
 
     @DeleteMapping("/users/{userId}/materials/{materialId}")
     public ResponseEntity<?> deleteMaterial(@PathVariable(value = "userId") Long userId,
