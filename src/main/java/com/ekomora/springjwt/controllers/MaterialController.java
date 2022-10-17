@@ -3,8 +3,10 @@ package com.ekomora.springjwt.controllers;
 import com.ekomora.springjwt.DTO.MaterialDto;
 import com.ekomora.springjwt.models.Material;
 import com.ekomora.springjwt.models.Post;
+import com.ekomora.springjwt.models.User;
 import com.ekomora.springjwt.repository.MaterialRepository;
 import com.ekomora.springjwt.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -56,7 +58,7 @@ public class MaterialController {
             throw new ResourceNotFoundException("Not found Material with id = " + materialId);
         }
 
-        Optional<MaterialDto> material = materialRepository.findMaterialById(materialId);
+        Optional<MaterialDto> material = materialRepository.findProjectedById(materialId);
         return new ResponseEntity<>(material.get(), HttpStatus.OK);
     }
 
@@ -86,7 +88,7 @@ public class MaterialController {
             material.setType(materialRequest.getType());
             material.setAmount(materialRequest.getAmount());
             material.setPrice(materialRequest.getPrice());
-
+            material.setUser(userRepository.getById(userId));
             return materialRepository.save(material);
         }).orElseThrow(() -> new ResourceNotFoundException("MaterialId " + materialId + "not found"));
     }

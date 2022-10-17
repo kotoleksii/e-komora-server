@@ -22,10 +22,6 @@ public class SignupRequest {
 
     private Set<String> role;
 
-//    @NotBlank
-//    @Size(max = 120)
-//    private String post;
-
     @NotBlank
     @Size(max = 120)
     private String avatar;

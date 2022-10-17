@@ -1,13 +1,16 @@
 package com.ekomora.springjwt.DTO;
 
 import com.ekomora.springjwt.models.User;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
 @Getter
+@Setter
+@ToString
 public class MaterialDto {
     private long id;
     private String title;
