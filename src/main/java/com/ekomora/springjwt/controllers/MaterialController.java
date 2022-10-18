@@ -88,12 +88,23 @@ public class MaterialController {
             material.setType(materialRequest.getType());
             material.setAmount(materialRequest.getAmount());
             material.setPrice(materialRequest.getPrice());
-            material.setUser(userRepository.getById(userId));
+            //material.setUser(userRepository.getById(userId));
             return materialRepository.save(material);
         }).orElseThrow(() -> new ResourceNotFoundException("MaterialId " + materialId + "not found"));
     }
 
-    //TODO: SendMaterial (change foreign key userId ?)
+    @PutMapping("/users/{userId}/materials/{materialId}/send")
+    public Material sendMaterial(@PathVariable(value = "userId") Long userId,
+                                   @PathVariable(value = "materialId") Long materialId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("UserId " + userId + " not found");
+        }
+
+        return materialRepository.findById(materialId).map(material -> {
+            material.setUser(userRepository.getById(userId));
+            return materialRepository.save(material);
+        }).orElseThrow(() -> new ResourceNotFoundException("MaterialId " + materialId + "not found"));
+    }
 
     @DeleteMapping("/users/{userId}/materials/{materialId}")
     public ResponseEntity<?> deleteMaterial(@PathVariable(value = "userId") Long userId,
