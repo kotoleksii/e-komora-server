@@ -1,12 +1,14 @@
 package com.ekomora.springjwt.controllers;
 
 import com.ekomora.springjwt.DTO.MaterialDto;
+import com.ekomora.springjwt.models.ContactForm;
 import com.ekomora.springjwt.models.Material;
 import com.ekomora.springjwt.models.Profile;
 import com.ekomora.springjwt.models.User;
 import com.ekomora.springjwt.repository.MaterialRepository;
 import com.ekomora.springjwt.repository.ProfileRepository;
 import com.ekomora.springjwt.repository.UserRepository;
+import com.ekomora.springjwt.services.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -44,6 +46,20 @@ public class TestController {
     @PreAuthorize("hasRole('ACCOUNTANT')")
     public String accountantAccess() {
         return "Accountant Board.";
+    }
+
+    @PostMapping("/contactForm")
+    public ResponseEntity<HttpStatus> sendContactFormMessage(@RequestBody ContactForm contactForm) {
+        try {
+            PasswordService.sendToMailContactData(
+                    contactForm.getName(),
+                    contactForm.getEmail(),
+                    contactForm.getMessage()
+            );
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     //    @GetMapping("/dashboard/user")

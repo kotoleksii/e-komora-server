@@ -73,4 +73,14 @@ public class PasswordService {
         mailSender.send(message);
     }
 
+    public static void sendToMailContactData(String name, String email, String message) {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        Properties props = mailSender.getJavaMailProperties();
+        mailSenderSettings("kotoleksiiua@gmail.com", mailSender, mailMessage, props);
+        mailMessage.setText("Користувач " + name + " (" + email + ") написав: \n" +
+                message);
+        mailSender.send(mailMessage);
+    }
+
 }
