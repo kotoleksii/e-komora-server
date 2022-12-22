@@ -32,4 +32,6 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
     List<MaterialDto> findAllProjectedBy();
 
     Optional<MaterialDto> findProjectedById(@Param("id") Long id);
+
+    long countByUserId(Long userId);
 }

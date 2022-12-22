@@ -52,6 +52,16 @@ public class MaterialController {
         return new ResponseEntity<>(materials, HttpStatus.OK);
     }
 
+    @GetMapping("/users/materials/{userId}/amount")
+    public long getAmountMaterialsByUserId(@PathVariable(value = "userId") Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Not found User with id = " + userId);
+        }
+
+        long amount = materialRepository.countByUserId(userId);
+        return amount;
+    }
+
     @GetMapping("/users/material/{materialId}")
     public ResponseEntity<MaterialDto> getMaterialById(@PathVariable(value = "materialId") Long materialId) {
         if (!materialRepository.existsById(materialId)) {

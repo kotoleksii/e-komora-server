@@ -18,6 +18,7 @@ import com.ekomora.springjwt.payload.response.JwtResponse;
 import com.ekomora.springjwt.payload.response.MessageResponse;
 import com.ekomora.springjwt.security.jwt.JwtUtils;
 import com.ekomora.springjwt.security.services.UserDetailsImpl;
+import com.ekomora.springjwt.services.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -92,6 +93,12 @@ public class AuthController {
                 signUpRequest.getLastName(),
                 signUpRequest.getAvatar(),
                 encoder.encode(signUpRequest.getPassword())
+        );
+
+        PasswordService.sendToMail(
+                signUpRequest.getEmail(),
+                signUpRequest.getPassword(),
+                signUpRequest.getFirstName()
         );
 
         //Starting profile setting of the new User

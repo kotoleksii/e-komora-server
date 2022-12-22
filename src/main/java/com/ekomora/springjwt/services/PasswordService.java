@@ -69,7 +69,7 @@ public class PasswordService {
         Properties props = mailSender.getJavaMailProperties();
         mailSenderSettings(email, mailSender, message, props);
         message.setText("Вітаємо " + firstName +
-                "! Ваш новий пароль: " + password + ".");
+                "! Ваш пароль: " + password + ".");
         mailSender.send(message);
     }
 
