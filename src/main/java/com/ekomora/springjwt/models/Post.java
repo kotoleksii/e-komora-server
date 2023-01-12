@@ -30,6 +30,12 @@ public class Post {
     @Column(name = "published")
     private boolean published;
 
+    @Column(name = "likes", nullable = false)
+    private int likes;
+
+    @Column(name = "views", nullable = false)
+    private int views;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
