@@ -119,32 +119,6 @@ public class PostController {
         }
     }
 
-    @PatchMapping("/posts/{id}/like")
-    public ResponseEntity<Post> likePost(@PathVariable("id") long id, @RequestBody Post post) {
-        Optional<Post> postData = postRepository.findById(id);
-
-        if (postData.isPresent()) {
-            Post _post = postData.get();
-            _post.setLikes(post.getLikes() + 1);
-            return new ResponseEntity<>(postRepository.save(_post), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/posts/{id}/dislike")
-    public ResponseEntity<Post> dislikePost(@PathVariable("id") long id, @RequestBody Post post) {
-        Optional<Post> postData = postRepository.findById(id);
-
-        if (postData.isPresent()) {
-            Post _post = postData.get();
-            _post.setLikes(post.getLikes() - 1);
-            return new ResponseEntity<>(postRepository.save(_post), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
     @PatchMapping("/posts/{id}/view")
     public ResponseEntity<Post> viewPost(@PathVariable("id") long id, @RequestBody Post post) {
         Optional<Post> postData = postRepository.findById(id);
@@ -157,4 +131,30 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+//    @PatchMapping("/posts/{id}/like")
+//    public ResponseEntity<Post> likePost(@PathVariable("id") long id, @RequestBody Post post) {
+//        Optional<Post> postData = postRepository.findById(id);
+//
+//        if (postData.isPresent()) {
+//            Post _post = postData.get();
+//            _post.setLikes(post.getLikes() + 1);
+//            return new ResponseEntity<>(postRepository.save(_post), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+//
+//    @PatchMapping("/posts/{id}/dislike")
+//    public ResponseEntity<Post> dislikePost(@PathVariable("id") long id, @RequestBody Post post) {
+//        Optional<Post> postData = postRepository.findById(id);
+//
+//        if (postData.isPresent()) {
+//            Post _post = postData.get();
+//            _post.setLikes(post.getLikes() - 1);
+//            return new ResponseEntity<>(postRepository.save(_post), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 }

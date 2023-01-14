@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,36 +28,17 @@ public class UserPostLikeController {
     @Autowired
     UserRepository userRepository;
 
-    @PostMapping("/user-post-likes/like")
-    public ResponseEntity<UserPostLike> likePost(@RequestBody UserPostLike userPostLike) {
-        try {
-            UserPostLike _userPostLike = userPostLikeRepository
-                    .save(new UserPostLike(
-                            userPostLike.getPostId(),
-                            userPostLike.getUserId(),
-                            true)
-                    );
-            return new ResponseEntity<>(_userPostLike, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/posts/likes")
+    public List<UserPostLike> getLikes() {
+        return userPostLikeRepository.findAll();
     }
 
-    @DeleteMapping("/user-post-likes/{postId}/{userId}")
-    public ResponseEntity<?> dislikePost(@PathVariable Long postId,
-                                         @PathVariable Long userId) {
-        return userPostLikeRepository.findByPostIdAndUserId(postId, userId)
-                .map(like -> {
-                    userPostLikeRepository.delete(like);
-                    return ResponseEntity.ok().build();
-                })
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Like not found with post id "
-                                + postId +
-                                " and UserId " + userId));
+    @GetMapping("/posts/likes/{userId}")
+    public List<UserPostLike> getLikesByUserId(@PathVariable Long userId) {
+        return userPostLikeRepository.findByUserId(userId);
     }
 
-    @GetMapping("/user-post-likes/{postId}/{userId}")
+    @GetMapping("/posts/likes/{postId}/{userId}")
     public boolean getLikeStatus(@PathVariable Long postId, @PathVariable Long userId) {
         Optional<UserPostLike> userPostLikeData = userPostLikeRepository.findByPostIdAndUserId(postId, userId);
 
@@ -66,19 +48,41 @@ public class UserPostLikeController {
         return false;
     }
 
-//    @PutMapping("/user-post-likes/{id}")
-//    public ResponseEntity<UserPostLike> dislikePost(@PathVariable("id") long id,
-//                                                    @RequestBody UserPostLike userPostLike) {
-//        Optional<UserPostLike> userPostLikeData = userPostLikeRepository.findById(id);
-//
-//        if (userPostLikeData.isPresent()) {
-//            UserPostLike _userPostLike = userPostLikeData.get();
-//            _userPostLike.setPostId(userPostLike.getPostId());
-//            _userPostLike.setUserId(userPostLike.getUserId());
-//            _userPostLike.setLiked(userPostLike.isLiked());
-//            return new ResponseEntity<>(userPostLikeRepository.save(_userPostLike), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @PostMapping("/posts/likes/{postId}/{userId}")
+    public ResponseEntity<UserPostLike> likePost(@PathVariable Long postId,
+                                                 @PathVariable Long userId) {
+        try {
+            UserPostLike _userPostLike = userPostLikeRepository
+                    .save(new UserPostLike(
+                            postId,
+                            userId,
+                            true)
+                    );
+
+            Optional<Post> postData = postRepository.findById(postId);
+            Post _post = postData.get();
+            _post.setLikes(_post.getLikes() + 1);
+            postRepository.save(_post);
+
+            return new ResponseEntity<>(_userPostLike, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/posts/likes/{postId}/{userId}")
+    public ResponseEntity<?> dislikePost(@PathVariable Long postId,
+                                         @PathVariable Long userId) {
+        try {
+            userPostLikeRepository.deleteByPostIdAndUserId(postId, userId);
+            Optional<Post> postData = postRepository.findById(postId);
+            Post _post = postData.get();
+            _post.setLikes(_post.getLikes() - 1);
+            postRepository.save(_post);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
