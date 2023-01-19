@@ -1,4 +1,4 @@
-package payload.request;
+package com.ekomora.springjwt.payload.request;
 
 import javax.validation.constraints.NotBlank;
 
