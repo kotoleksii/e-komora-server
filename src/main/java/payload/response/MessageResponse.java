@@ -1,4 +1,4 @@
-package com.ekomora.springjwt.payload.response;
+package payload.response;
 
 public class MessageResponse {
 	private String message;

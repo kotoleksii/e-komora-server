@@ -1,4 +1,4 @@
-package com.ekomora.springjwt.payload.response;
+package payload.response;
 
 import java.util.List;
 

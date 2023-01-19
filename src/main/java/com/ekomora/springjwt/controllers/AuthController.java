@@ -2,7 +2,6 @@ package com.ekomora.springjwt.controllers;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,10 +11,10 @@ import com.ekomora.springjwt.models.ERole;
 import com.ekomora.springjwt.models.Profile;
 import com.ekomora.springjwt.models.Role;
 import com.ekomora.springjwt.models.User;
-import com.ekomora.springjwt.payload.request.LoginRequest;
-import com.ekomora.springjwt.payload.request.SignupRequest;
-import com.ekomora.springjwt.payload.response.JwtResponse;
-import com.ekomora.springjwt.payload.response.MessageResponse;
+import payload.request.LoginRequest;
+import payload.request.SignupRequest;
+import payload.response.JwtResponse;
+import payload.response.MessageResponse;
 import com.ekomora.springjwt.security.jwt.JwtUtils;
 import com.ekomora.springjwt.security.services.UserDetailsImpl;
 import com.ekomora.springjwt.services.PasswordService;
@@ -118,15 +117,15 @@ public class AuthController {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "accountant":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ACCOUNTANT)
+                        Role accountantRole = roleRepository.findByName(ERole.ROLE_ACCOUNTANT)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
+                        roles.add(accountantRole);
 
                         break;
                     case "hr":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_HR)
+                        Role hrRole = roleRepository.findByName(ERole.ROLE_HR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
+                        roles.add(hrRole);
 
                         break;
                     default:

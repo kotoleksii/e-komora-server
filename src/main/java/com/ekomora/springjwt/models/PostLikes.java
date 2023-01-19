@@ -10,8 +10,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "user_post_likes")
-public class UserPostLike {
+@Table(name = "post_likes")
+public class PostLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -24,7 +24,7 @@ public class UserPostLike {
 
     private boolean liked;
 
-    public UserPostLike(long postId, long userId, boolean liked) {
+    public PostLikes(long postId, long userId, boolean liked) {
         this.postId = postId;
         this.userId = userId;
         this.liked = liked;

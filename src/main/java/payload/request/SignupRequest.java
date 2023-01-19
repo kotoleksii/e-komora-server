@@ -1,4 +1,4 @@
-package com.ekomora.springjwt.payload.request;
+package payload.request;
 
 import com.ekomora.springjwt.services.PasswordService;
 
